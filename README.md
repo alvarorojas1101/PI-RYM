@@ -32,8 +32,8 @@ Instalación y Uso
 1.  Clona este repositorio en tu máquina local.
 2.  Instala las dependencias utilizando `npm install`.
 3.  Inicia el servidor backend con `npm start`.
-4.  Inicia el servidor frontend con `npm run start:client`.
-5.  Abre tu navegador y accede a `http://localhost:3000`.
+4.  Inicia el servidor frontend con `npm run dev`.
+5.  Abre tu navegador y accede a `http://localhost:3001`.
 
 Contribución
 ------------
