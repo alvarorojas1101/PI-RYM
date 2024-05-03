@@ -1,0 +1,23 @@
+.buttonFavorites {
+  margin: 10px;
+  padding: 10px 15px;
+
+  border: none;
+
+  border-radius: 5px;
+
+  cursor: pointer;
+  margin-top: 80px;
+}
+
+.selectDropdown {
+  padding: 8px;
+
+  border: 1px solid #ccc;
+
+  border-radius: 5px;
+
+  margin-right: 10px;
+
+  font-size: 16px;
+}
