@@ -51,9 +51,6 @@ Autores
 
 *   Alvaro Rojas - Desarrollador Full-stack
 
----
 
-<br />
 
-  <img src="./countries.png" />
-# PI-RYM
+
