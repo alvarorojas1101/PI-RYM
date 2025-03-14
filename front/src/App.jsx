@@ -14,7 +14,8 @@ function App() {
   const [access, setAccess] = useState(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const URL = `http://localhost:3001/rickandmorty`;
+  const URL =
+    import.meta.env.VITE_API_URL || "http://localhost:3001/rickandmorty";
 
   const onSearch = async (id) => {
     try {
@@ -42,12 +43,22 @@ function App() {
 
   const login = async ({ email, password }) => {
     try {
-      const { data } = await axios(
-        `${URL}/login?email=${email}&password=${password}`
-      );
-      data.access ? setAccess(true) && navigate("/home") : setAccess(false);
+      const { data } = await axios.post(`${URL}/login`, { email, password });
+      if (data.access) {
+        setAccess(true);
+        navigate("/home");
+      }
     } catch (error) {
-      console.log(error);
+      alert("Credenciales inválidas");
+    }
+  };
+  // Y agregar esta función para registro
+  const register = async ({ email, password }) => {
+    try {
+      await axios.post(`${URL}/register`, { email, password });
+      alert("Registro exitoso! Ahora puedes iniciar sesión");
+    } catch (error) {
+      alert(error.response?.data?.message || "Error al registrar");
     }
   };
 
@@ -57,7 +68,7 @@ function App() {
 
   return (
     <div className="App">
-      {pathname != "/login" && (
+      {pathname !== "/login" && pathname !== "/register" && (
         <Nav onSearch={onSearch} addRandomCharacter={addRandomCharacter} />
       )}
       <Routes>
@@ -68,7 +79,14 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/detail/:id" element={<Detail />} />
         <Route path="/favorites" element={<Favorites />} />
-        <Route path="/login" element={<Form login={login} />} />
+        <Route
+          path="/login"
+          element={<Form onSubmit={login} isLogin={true} />}
+        />
+        <Route
+          path="/register"
+          element={<Form onSubmit={register} isLogin={false} />}
+        />
       </Routes>
     </div>
   );
