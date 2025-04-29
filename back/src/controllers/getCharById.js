@@ -1,46 +1,44 @@
 const axios = require("axios");
 const { urlCharacterId } = require("../utils/reusable");
-const { headers } = require("../utils/reusable");
 
 async function getCharById(req, res) {
   try {
     const { id } = req.params;
-    const result = await axios(urlCharacterId(id));
-    const character = result.data;
-    if (character.name) {
-      const personaje = {
-        id: id,
-        name: character.name,
-        status: character.status,
-        species: character.species,
-        image: character.image,
-        gender: character.gender,
-        origin: character.origin,
-        location: character.location,
-        type: character.type,
-      };
-      res.status(200).json(personaje);
-    } else {
-      res.status(404).send("Character not found");
+    console.log("ID recibido:", id);
+    
+    // Validar que el ID sea un número
+    if (!id || isNaN(id)) {
+      return res.status(400).json({ message: "ID inválido" });
     }
-  } catch (err) {
-    res.status(500).send(err);
+
+    const apiUrl = urlCharacterId(id);
+    console.log("URL de la API de Rick and Morty:", apiUrl);
+    
+    const result = await axios.get(apiUrl);
+    console.log("Respuesta de la API:", result.data);
+    res.json(result.data);
+  } catch (error) {
+    console.error("Error detallado:", {
+      error,
+      message: error.message,
+      response: error.response,
+      status: error.response?.status,
+      data: error.response?.data
+    });
+    
+    if (error.response) {
+      // Si la API de Rick and Morty responde con un error
+      return res.status(error.response.status).json({
+        message:
+          error.response.data?.message || "Error al obtener el personaje",
+      });
+    }
+    
+    // Si hay un error en la conexión o timeout
+    return res.status(500).json({
+      message: "Error al conectar con la API de Rick and Morty",
+    });
   }
 }
 
 module.exports = getCharById;
-
-const { Country } = require("../db");
-
-// Controlador para obtener todos los países
-exports.allCountries = async (req, res) => {
-  try {
-    // Obtiene todos los países de la base de datos
-    const countries = await Country.findAll();
-    // Envía los países como respuesta
-    res.status(200).json(countries);
-  } catch (error) {
-    // En caso de error, envía un mensaje de error
-    res.status(500).json({ error: "Error fetching countries" });
-  }
-};

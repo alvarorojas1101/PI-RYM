@@ -1,19 +1,20 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import style from "./SearchBar.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSignOutAlt,
-  faHome,
-  faBars,
-} from "@fortawesome/free-solid-svg-icons";
+import { faHome, faBars } from "@fortawesome/free-solid-svg-icons";
 
 export default function SearchBar({ onSearch, addRandomCharacter }) {
+  SearchBar.propTypes = {
+    onSearch: PropTypes.func.isRequired,
+    addRandomCharacter: PropTypes.func.isRequired,
+  };
+
   const [id, setId] = useState("");
   const handleChange = (event) => {
     setId(event.target.value);
   };
-  const [isMouseOver, setIsMouseOver] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleResize = () => {
@@ -60,17 +61,6 @@ export default function SearchBar({ onSearch, addRandomCharacter }) {
           <button onClick={addRandomCharacter} className={style.buttonAdd}>
             Random
           </button>
-        </div>
-        <div
-          className={style.buttonLogOut}
-          onMouseOver={() => setIsMouseOver(true)}
-          onMouseOut={() => setIsMouseOver(false)}>
-          <span style={{ display: isMouseOver ? "inline" : "none" }}>
-            Log Out
-          </span>
-          <Link to="/login">
-            <FontAwesomeIcon icon={faSignOutAlt} />
-          </Link>
         </div>
       </div>
     </div>

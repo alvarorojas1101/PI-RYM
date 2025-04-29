@@ -1,25 +1,29 @@
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import styles from "./Detail.module.css";
 
 const Detail = () => {
   const { id } = useParams();
   const [character, setCharacter] = useState({});
 
-  function onSearch() {
-    axios(`http://localhost:3001/rickandmorty/character/${id}`)
-      .then(({ status, data }) => {
+  const onSearch = useCallback(() => {
+    axios(`http://localhost:3001/api/character/${id}`)
+      .then(({ data }) => {
         if (data.name) setCharacter(data);
         else {
           window.alert("No hay personajes con ese ID");
         }
       })
-      .catch((error) => window.alert("Ocurrio un error"));
-  }
+      .catch((error) => {
+        console.error("Error al obtener detalle:", error);
+        window.alert("Ocurrio un error al obtener el detalle del personaje");
+      });
+  }, [id]);
+
   useEffect(() => {
     onSearch();
-  }, []);
+  }, [onSearch]);
 
   return (
     <div>
