@@ -1,0 +1,11 @@
+{
+  "name": "pi-rym",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "cd front && npm run build",
+    "start": "node back/src/server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
